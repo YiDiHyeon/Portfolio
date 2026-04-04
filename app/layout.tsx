@@ -1,5 +1,44 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+import LeftSidebar from "@/components/left-sidebar";
 import "./globals.css";
+
+const satoshi = localFont({
+  src: [
+    {
+      path: "../public/fonts/Satoshi-Variable.woff2",
+      weight: "300 900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-satoshi-variable",
+  display: "block",
+  preload: true,
+  fallback: ["Apple SD Gothic Neo", "Noto Sans KR", "system-ui", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
+
+const clashDisplay = localFont({
+  src: "../public/fonts/ClashDisplay-Variable.woff2",
+  weight: "200 700",
+  style: "normal",
+  variable: "--font-clash-display",
+  display: "block",
+  preload: true,
+  fallback: ["Arial", "system-ui", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
+
+const pretendard = localFont({
+  src: "../public/fonts/PretendardVariable.woff2",
+  weight: "45 920",
+  style: "normal",
+  variable: "--font-pretendard",
+  display: "swap",
+  preload: false,
+  fallback: ["Apple SD Gothic Neo", "Noto Sans KR", "system-ui", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
 
 export const metadata: Metadata = {
   title: '이지현 | Frontend Developer',
@@ -12,16 +51,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="h-full antialiased font-sans" suppressHydrationWarning>
+    <html
+      lang="ko"
+      className={`${satoshi.variable} ${clashDisplay.variable} ${pretendard.variable} relative antialiased font-sans`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preload" href="/fonts/Satoshi-Variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
                 const stored = localStorage.getItem('theme-storage');
-                const isDark = stored === 'light' || (!stored && true);
+                const isDark = stored === 'dark';
                 if (isDark) {
                   document.documentElement.classList.add('dark');
                 } else {
@@ -32,7 +73,17 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="flex flex-col min-h-full">{children}</body>
+      <body className="relative min-h-screen w-full bg-bg text-text-primary">
+        <div className="flex min-h-screen flex-col lg:flex-row">
+          <LeftSidebar />
+          <div
+            id="main-scroll-container"
+            className="relative min-w-0 flex-1 lg:ml-[var(--sidebar-width)]"
+          >
+            {children}
+          </div>
+        </div>
+      </body>
     </html>
   );
 }

@@ -9,7 +9,7 @@ interface ThemeStoreState {
 }
 
 const useThemeStore = create<ThemeStoreState>((set) => ({
-    theme: 'light', // 서버 및 첫 렌더링 기본값
+    theme: 'light',
     setTheme: (nextTheme) => {
         localStorage.setItem('theme-storage', nextTheme);
         set({ theme: nextTheme });
