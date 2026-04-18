@@ -1,8 +1,24 @@
+export interface PortfolioProfileSkills {
+    primary: string[];
+    etc: string[];
+}
+
+export interface PortfolioProfileLinks {
+    github: string;
+    email: string;
+    blog?: string;
+}
+
 export interface PortfolioProfile {
     displayName: string;
+    name: string;
+    history: string;
     jobTitle: string;
-    githubUrl: string;
-    email: string;
+    tagline: string;
+    summary: string[];
+    skills: PortfolioProfileSkills;
+    links: PortfolioProfileLinks;
+    location?: string;
 }
 
 export interface PortfolioIntroContent {
@@ -25,25 +41,71 @@ export interface PortfolioExperienceItem {
     projects: PortfolioExperienceProject[];
 }
 
+export interface PortfolioProjectDetailItem {
+    title: string;
+    description: string;
+    imageAlt?: string;
+    imageSrc?: string;
+    imageSrcs?: string[];
+}
+
+export interface PortfolioProjectTechnicalSolution {
+    keyword: string;
+    problem: string;
+    solution: string;
+    result: string;
+}
+
+export interface PortfolioProjectTechGroup {
+    title: string;
+    items: string[];
+}
+
+export type PortfolioProjectTech = string[] | PortfolioProjectTechGroup[];
+
+export interface PortfolioProjectResponsibilityGroup {
+    title: string;
+    items?: string[];
+}
+
+export type PortfolioProjectResponsibilities =
+    | string[]
+    | PortfolioProjectResponsibilityGroup[];
+
 export interface PortfolioProjectContent {
     slug: string;
     title: string;
     description: string;
     explanation: string;
     hoverText: string;
+    heroEyebrow?: string;
     thumbnailSrc?: string;
+    devicePreviewSrc?: string;
+    projectUrl?: string;
     role: string;
     period: string;
-    tech: string[];
+    platform?: string;
+    agency?: string;
+    team?: string;
+    tech: PortfolioProjectTech;
     problem: string;
     solution: string;
     implementation: string[];
     troubleshooting: string;
+    overview?: string;
+    summaryLine?: string;
+    goals?: string[];
+    coreFeature?: string[];
+    responsibilities?: PortfolioProjectResponsibilities;
+    keyDesigns?: PortfolioProjectDetailItem[];
+    technicalSolutions?: string[] | PortfolioProjectTechnicalSolution[];
+    outcomes?: string[];
+    retrospective?: string[];
+    closingNote?: string;
 }
 
 export interface PortfolioFooterContent {
-    githubUrl: string;
-    email: string;
+    links: PortfolioProfileLinks;
     resumeUrl?: string;
 }
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { getProjectTechItems } from "@/lib/project-tech";
 import type { PortfolioProjectContent } from "@/types/portfolio";
 
 interface ProjectCardProps {
@@ -10,6 +11,7 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
     const shouldReduceMotion = useReducedMotion();
+    const previewTech = getProjectTechItems(project.tech).slice(0, 4);
 
     const transition = shouldReduceMotion
         ? { duration: 0 }
@@ -29,7 +31,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             className="group relative min-h-64 overflow-hidden bg-card-bg shadow-sm transition-colors duration-300 hover:bg-surface"
         >
             <Link
-                href={`/projects/${project.slug}`}
+                href={`/${project.slug}`}
+                scroll={false}
                 className="absolute inset-0 z-20 outline-none"
                 aria-label={`${project.title} 상세 보기`}
             />
@@ -52,7 +55,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                     </p>
 
                     <p className="text-sm font-semibold uppercase tracking-label-tight text-text-secondary/80">
-                        {project.tech.slice(0, 4).join(" · ")}
+                        {previewTech.join(" · ")}
                     </p>
                 </div>
 

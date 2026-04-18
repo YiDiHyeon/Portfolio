@@ -47,3 +47,6 @@ next-env.d.ts
 # IDEs
 /.idea
 /*.iml
+
+# local docs
+/docs

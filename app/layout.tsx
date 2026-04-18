@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import LeftSidebar from "@/components/left-sidebar";
+import SiteChrome from "./_components/site-chrome";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -74,11 +74,11 @@ export default function RootLayout({
         />
       </head>
       <body className="relative min-h-screen w-full bg-bg text-text-primary">
+        <SiteChrome />
         <div className="flex min-h-screen flex-col lg:flex-row">
-          <LeftSidebar />
           <div
             id="main-scroll-container"
-            className="relative min-w-0 flex-1 lg:ml-[var(--sidebar-width)]"
+            className="relative min-w-0 flex-1"
           >
             {children}
           </div>

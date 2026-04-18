@@ -2,7 +2,6 @@
 
 import FeaturedProjectCard from "@/app/_components/featured-project-card";
 import SectionHeading from "@/app/_components/section-heading";
-import StandardProjectCard from "@/app/_components/standard-project-card";
 import { motion } from "framer-motion";
 import type { PortfolioProjectContent } from "@/types/portfolio";
 
@@ -11,7 +10,6 @@ interface ProjectsSectionProps {
 }
 
 const featuredProjectSlugs = ["tarome", "chap-landing"] as const;
-const standardProjectSlugs = ["nova-admin", "portfolio"] as const;
 const projectListReveal = {
     hidden: {},
     visible: {
@@ -42,14 +40,13 @@ function getOrderedProjects(
 
 export default function ProjectsSection({ projects }: ProjectsSectionProps) {
     const featuredProjects = getOrderedProjects(projects, featuredProjectSlugs);
-    const standardProjects = getOrderedProjects(projects, standardProjectSlugs);
 
     return (
-        <section className="border-t border-border bg-bg">
+        <section className="">
             <div className="mx-auto max-w-7xl px-6 pt-20 pb-32 md:pb-40 lg:px-10 lg:pt-32 lg:pb-24">
                 <SectionHeading
                     eyebrow="Selected Work"
-                    title="Projects."
+                    title="Projects"
                     className="mb-12 space-y-3 md:mb-14 md:space-y-4 lg:mb-16"
                 />
 
@@ -77,19 +74,6 @@ export default function ProjectsSection({ projects }: ProjectsSectionProps) {
                     })}
                 </motion.div>
 
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                    variants={projectListReveal}
-                    className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-2 lg:gap-8"
-                >
-                    {standardProjects.map((project) => (
-                        <motion.div key={project.slug} variants={projectCardReveal}>
-                            <StandardProjectCard project={project} />
-                        </motion.div>
-                    ))}
-                </motion.div>
             </div>
         </section>
     );

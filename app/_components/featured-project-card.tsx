@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { getProjectTechItems } from "@/lib/project-tech";
 import type { PortfolioProjectContent } from "@/types/portfolio";
 import ProjectCardCta from "@/app/_components/project-card-cta";
 
@@ -18,13 +19,15 @@ export default function FeaturedProjectCard({
     priority = false,
 }: FeaturedProjectCardProps) {
     const shouldReduceMotion = useReducedMotion();
+    const previewTech = getProjectTechItems(project.tech).slice(0, 3);
     const cardTransition = shouldReduceMotion
         ? { duration: 0 }
         : { type: "spring" as const, stiffness: 260, damping: 24, mass: 0.75 };
 
     return (
         <Link
-            href={`/projects/${project.slug}`}
+            href={`/${project.slug}`}
+            scroll={false}
             className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-strong focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
             <motion.article
@@ -45,7 +48,7 @@ export default function FeaturedProjectCard({
                     },
                 }}
                 transition={cardTransition}
-                className="relative isolate bg-card-bg transition-colors duration-300 md:overflow-hidden md:h-96 lg:h-[28rem] xl:h-[30rem] dark:bg-surface/80"
+                className="relative isolate bg-card-bg transition-colors duration-300 md:overflow-hidden md:h-96 lg:h-[28rem] xl:h-[30rem]"
             >
                 <div className="relative h-40 overflow-hidden sm:h-48 md:absolute md:inset-x-0 md:top-0 md:h-64 lg:h-72 xl:h-80">
                     <motion.div
@@ -82,7 +85,7 @@ export default function FeaturedProjectCard({
                         hover: { y: 0 },
                     }}
                     transition={cardTransition}
-                    className="relative z-10 -mt-5 flex min-h-36 flex-col bg-card-bg px-5 py-5 sm:-mt-6 sm:min-h-40 sm:px-7 sm:py-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:border-t md:border-border/60 md:bg-surface md:px-7 md:py-7 lg:px-8 lg:py-8 dark:bg-[#202a35]"
+                    className="relative z-10 -mt-5 flex min-h-36 flex-col bg-card-bg px-5 py-5 sm:-mt-6 sm:min-h-40 sm:px-7 sm:py-6 md:absolute md:inset-x-0 md:bottom-0 md:mt-0 md:border-t md:border-border/60 md:bg-surface md:px-7 md:py-7 lg:px-8 lg:py-8 dark:bg-[#0d1219]"
                 >
                     <div className="space-y-3">
                         <div className="relative inline-block">
@@ -104,7 +107,7 @@ export default function FeaturedProjectCard({
                         </p>
 
                         <p className="truncate font-mono text-label-xs font-bold uppercase tracking-label-tight text-text-secondary/78 sm:text-label-sm">
-                            {project.tech.slice(0, 3).join(" · ")}
+                            {previewTech.join(" · ")}
                         </p>
                     </div>
 

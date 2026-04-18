@@ -1,18 +1,29 @@
 "use client";
 
+import { animate, motion, useScroll, useTransform } from "framer-motion";
+import type { MouseEvent, ReactNode } from "react";
+import ScrambleText from "@/components/scramble-text";
 import type { PortfolioIntroContent } from "@/types/portfolio";
-import Highlight from "@/components/highlight";
-import { motion, useScroll, useTransform } from "framer-motion";
 
 interface IntroSectionProps {
     intro: PortfolioIntroContent;
 }
 
+const HERO_TIMING = {
+    eyebrow: 60,
+    line1: 140,
+    complex: 260,
+    line2: 320,
+    simply: 460,
+    divider: 700,
+    cta: 820,
+} as const;
+
 function RevealLine({
     children,
     delayMs,
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
     delayMs: string;
 }) {
     return (
@@ -24,23 +35,6 @@ function RevealLine({
     );
 }
 
-function GridBackground() {
-    return (
-        <div
-            className="absolute inset-0 z-0 pointer-events-none"
-            style={{
-                backgroundImage: `
-                    linear-gradient(to right, var(--intro-grid-color) 1px, transparent 1px),
-                    linear-gradient(to bottom, var(--intro-grid-color) 1px, transparent 1px)
-                `,
-                backgroundSize: "24px 24px",
-                maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 40%, transparent 100%)",
-                WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 40%, transparent 100%)",
-            }}
-        />
-    );
-}
-
 export default function IntroSection({ intro }: IntroSectionProps) {
     const { scrollY } = useScroll();
 
@@ -48,52 +42,71 @@ export default function IntroSection({ intro }: IntroSectionProps) {
     const opacity = useTransform(scrollY, [0, 600], [1, 0.5]);
     const y = useTransform(scrollY, [0, 600], [0, 60]);
 
-    return (
-        <section className="relative flex h-full min-h-full w-full items-center overflow-hidden bg-bg">
-            <GridBackground />
+    const handleProfileClick = (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault();
 
-            <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-[calc(var(--mobile-header-offset)+1rem)] md:px-10 md:py-20">
+        const profileSection = document.getElementById("profile");
+
+        if (!profileSection) {
+            return;
+        }
+
+        const targetPosition = profileSection.getBoundingClientRect().top + window.scrollY;
+
+        animate(window.scrollY, targetPosition, {
+            type: "spring",
+            stiffness: 50,
+            damping: 14,
+            mass: 0.8,
+            restDelta: 0.5,
+            onUpdate: (latest) => window.scrollTo(0, latest),
+        });
+    };
+
+    return (
+        <section className="relative flex h-full min-h-full w-full items-center overflow-hidden">
+            <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-14 pt-[calc(var(--mobile-header-offset)+1rem)] md:px-10 md:py-18">
                 <motion.div
                     style={{
                         scale,
                         opacity,
                         y,
                     }}
-                    className="relative flex w-full flex-col origin-center"
+                    className="relative flex w-full origin-center flex-col items-center text-center"
                 >
                     <p
-                        className="hero-fade-up mb-4 text-xs font-medium uppercase tracking-label-lg text-text-secondary md:mb-5"
-                        style={{ animationDelay: "60ms" }}
+                        className="hero-fade-up mb-3 text-2xl font-medium uppercase tracking-label-md text-text-secondary md:mb-4 md:text-3xl"
+                        style={{ animationDelay: `${HERO_TIMING.eyebrow}ms` }}
                     >
                         {intro.eyebrow}
                     </p>
 
-                    <h1 className="mb-6 font-clash text-[clamp(3.5rem,11vw,8rem)] font-semibold leading-[0.85] tracking-[-0.04em] text-text-primary">
+                    <h1 className="mb-5 font-general-sans text-[2.75rem] font-semibold leading-[0.95] tracking-normal text-text-primary sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem]">
                         <span className="flex flex-col gap-0">
-                            <RevealLine delayMs="120ms">
-                                Make <Highlight delayMs="1120ms">complex</Highlight>
+                            <RevealLine delayMs={`${HERO_TIMING.line1}ms`}>
+                                Make <ScrambleText text="complex" delayMs={HERO_TIMING.complex} durationMs={420} />
                             </RevealLine>
-                            <RevealLine delayMs="210ms">
-                                flows <Highlight delayMs="1260ms">simple</Highlight>
+                            <RevealLine delayMs={`${HERO_TIMING.line2}ms`}>
+                                flows work <ScrambleText text="simply" delayMs={HERO_TIMING.simply} durationMs={420} />
                             </RevealLine>
                         </span>
                     </h1>
 
-                    <p
-                        className="hero-fade-up max-w-2xl break-keep text-base leading-relaxed text-text-secondary md:text-lg"
-                        style={{ animationDelay: "280ms" }}
+                    <div
+                        className="hero-fade-up mt-8 h-px w-20 bg-text-primary/20 md:mt-10"
+                        style={{ animationDelay: `${HERO_TIMING.divider}ms` }}
+                    />
+
+                    <div
+                        className="hero-fade-up mt-10 md:mt-12"
+                        style={{ animationDelay: `${HERO_TIMING.cta}ms` }}
                     >
-                        {intro.description}
-                    </p>
-
-                    <div className="hero-fade-up mt-10 h-px w-24 bg-text-primary/20 md:mt-14" style={{ animationDelay: "340ms" }} />
-
-                    <div className="hero-fade-up mt-12 md:mt-16" style={{ animationDelay: "420ms" }}>
                         <a
-                            href="#experience"
-                            className="group flex items-center gap-4 text-xs font-bold uppercase tracking-label-tight text-text-primary transition-colors duration-300 hover:text-orange-strong"
+                            href="#profile"
+                            onClick={handleProfileClick}
+                            className="group flex items-center justify-center gap-3 text-[0.7rem] font-bold uppercase tracking-label-tight text-text-primary transition-colors duration-300 hover:text-orange-strong md:text-xs"
                         >
-                            <span>See Experience</span>
+                            <span>See Profile</span>
                             <span className="inline-block motion-safe:animate-bounce">
                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 1V11M6 11L1 6M6 11L11 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

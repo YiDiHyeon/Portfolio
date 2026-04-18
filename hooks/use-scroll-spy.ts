@@ -1,50 +1,77 @@
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function useScrollSpy(ids: string[], options?: IntersectionObserverInit) {
+export function useScrollSpy(ids: string[]) {
+    const pathname = usePathname();
     const [activeId, setActiveId] = useState<string>(ids[0] ?? "");
     const idsKey = ids.join("::");
 
     useEffect(() => {
         const targetIds = idsKey ? idsKey.split("::") : [];
-        const visibleIds = new Set<string>();
-        const elements = targetIds
+
+        if (!targetIds.length) {
+            return;
+        }
+
+        let animationFrameId: number | null = null;
+        let elements = targetIds
             .map((id) => document.getElementById(id))
             .filter((element): element is HTMLElement => element !== null);
 
-        const observer = new IntersectionObserver((entries) => {
-            let isChanged = false;
+        const getActiveSectionId = () => {
+            const offset = window.innerHeight * 0.35;
+            const currentScrollY = window.scrollY + offset;
 
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    visibleIds.add(entry.target.id);
-                    isChanged = true;
-                } else {
-                    visibleIds.delete(entry.target.id);
-                    isChanged = true;
+            let nextActiveId = targetIds[0] ?? "";
+
+            elements.forEach((element) => {
+                const { id } = element;
+                if (element.offsetTop <= currentScrollY) {
+                    nextActiveId = id;
                 }
             });
 
-            if (isChanged) {
-                const active = [...targetIds].reverse().find((id) => visibleIds.has(id));
-                if (active) {
-                    setActiveId(active);
-                } else if (window.scrollY === 0 || document.getElementById("main-scroll-container")?.scrollTop === 0) {
-                    setActiveId(targetIds[0] ?? "");
-                }
-            }
-        }, {
-            rootMargin: "-20% 0px -70% 0px",
-            threshold: 0,
-            ...options,
-        });
+            return nextActiveId;
+        };
 
-        elements.forEach((element) => observer.observe(element));
+        const updateActiveSection = () => {
+            animationFrameId = null;
+            const nextActiveId = getActiveSectionId();
+
+            setActiveId((previousActiveId) => (
+                previousActiveId === nextActiveId ? previousActiveId : nextActiveId
+            ));
+        };
+
+        const scheduleUpdate = () => {
+            if (animationFrameId !== null) {
+                return;
+            }
+
+            animationFrameId = window.requestAnimationFrame(updateActiveSection);
+        };
+
+        const handleResize = () => {
+            elements = targetIds
+                .map((id) => document.getElementById(id))
+                .filter((element): element is HTMLElement => element !== null);
+            scheduleUpdate();
+        };
+
+        scheduleUpdate();
+
+        window.addEventListener("scroll", scheduleUpdate, { passive: true });
+        window.addEventListener("resize", handleResize);
 
         return () => {
-            observer.disconnect();
-            visibleIds.clear();
+            if (animationFrameId !== null) {
+                window.cancelAnimationFrame(animationFrameId);
+            }
+
+            window.removeEventListener("scroll", scheduleUpdate);
+            window.removeEventListener("resize", handleResize);
         };
-    }, [idsKey, options]);
+    }, [idsKey, pathname]);
 
     return activeId;
 }

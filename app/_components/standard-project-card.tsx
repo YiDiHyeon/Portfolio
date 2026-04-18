@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import { getProjectTechItems } from "@/lib/project-tech";
 import type { PortfolioProjectContent } from "@/types/portfolio";
 import ProjectCardCta from "@/app/_components/project-card-cta";
 
@@ -11,13 +12,15 @@ interface StandardProjectCardProps {
 
 export default function StandardProjectCard({ project }: StandardProjectCardProps) {
     const shouldReduceMotion = useReducedMotion();
+    const previewTech = getProjectTechItems(project.tech).slice(0, 3);
     const cardTransition = shouldReduceMotion
         ? { duration: 0 }
         : { type: "spring" as const, stiffness: 320, damping: 28, mass: 0.7 };
 
     return (
         <Link
-            href={`/projects/${project.slug}`}
+            href={`/${project.slug}`}
+            scroll={false}
             className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-strong focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
             <motion.article
@@ -30,7 +33,7 @@ export default function StandardProjectCard({ project }: StandardProjectCardProp
                     hover: { y: 0, scale: 1 },
                 }}
                 transition={cardTransition}
-                className="flex h-full min-h-48 flex-col border border-border/50 bg-card-bg transition-[background-color,border-color] duration-300 group-hover:border-orange-strong/35 group-hover:bg-surface sm:min-h-52 lg:min-h-56 dark:bg-surface dark:group-hover:border-orange-strong/45 dark:group-hover:bg-[#202a35]"
+                className="flex h-full min-h-48 flex-col bg-card-bg transition-colors duration-300 sm:min-h-52 lg:min-h-56 "
                 style={{
                     boxShadow: "0 12px 32px rgba(15, 23, 32, 0.05)",
                 }}
@@ -41,15 +44,15 @@ export default function StandardProjectCard({ project }: StandardProjectCardProp
                         hover: { y: 0 },
                     }}
                     transition={cardTransition}
-                    className="relative z-10 flex h-full flex-col bg-card-bg px-5 py-5 sm:px-7 sm:py-6 lg:px-8 lg:py-7 dark:bg-transparent"
+                    className="relative z-10 flex h-full flex-col bg-card-bg px-5 py-5 sm:px-7 sm:py-6 lg:px-8 lg:py-7 dark:bg-[#0d1219]"
                 >
                     <div className="flex-1 space-y-3">
                         <div className="relative inline-block">
                             <motion.span
                                 aria-hidden="true"
                                 variants={{
-                                    rest: { scaleX: 0.18, opacity: 0.24 },
-                                    hover: { scaleX: 1, opacity: 0.88 },
+                                    rest: { scaleX: 0.18 },
+                                    hover: { scaleX: 1 },
                                 }}
                                 transition={cardTransition}
                                 className="project-card-title-highlight absolute inset-x-0 origin-left bg-orange-soft/70"
@@ -64,7 +67,7 @@ export default function StandardProjectCard({ project }: StandardProjectCardProp
                         </p>
 
                         <p className="font-mono text-label-xs font-bold uppercase tracking-label-tight text-text-secondary/78 sm:text-label-sm">
-                            {project.tech.slice(0, 3).join(" · ")}
+                            {previewTech.join(" · ")}
                         </p>
                     </div>
 

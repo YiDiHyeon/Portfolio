@@ -8,11 +8,11 @@ interface FooterSectionProps {
 }
 
 const footerVariants = {
-    hidden: { scaleY: 0.86, transformOrigin: "bottom" },
+    hidden: { opacity: 0, y: 10 },
     visible: {
-        scaleY: 1,
-        transformOrigin: "bottom",
-        transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const },
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
     },
 };
 
@@ -34,8 +34,11 @@ const itemVariants = {
 
 export default function FooterSection({ footer }: FooterSectionProps) {
     const links = [
-        { label: "GitHub", href: footer.githubUrl, external: true },
-        { label: "Email", href: footer.email, external: false },
+        { label: "GitHub", href: footer.links.github, external: true },
+        { label: "Email", href: footer.links.email, external: false },
+        ...(footer.links.blog
+            ? [{ label: "Blog", href: footer.links.blog, external: true }]
+            : []),
     ];
 
     return (
@@ -44,9 +47,9 @@ export default function FooterSection({ footer }: FooterSectionProps) {
             whileInView="visible"
             viewport={{ once: true, amount: 0.45 }}
             variants={footerVariants}
-            className="overflow-hidden border-t border-border"
+            className="overflow-hidden"
         >
-            <footer className="bg-bg">
+            <footer className="">
                 <div className="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14">
                     <motion.div
                         variants={containerVariants}

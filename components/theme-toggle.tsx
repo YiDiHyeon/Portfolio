@@ -1,48 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useThemeStore from '@/store/theme';
 
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
   const theme = useThemeStore((state) => state.theme);
+  const initializeTheme = useThemeStore((state) => state.initializeTheme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
-  const setTheme = useThemeStore((state) => state.setTheme);
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme-storage');
-    if (stored === 'dark') {
-      setTheme('dark');
-    }
-
-    const frameId = window.requestAnimationFrame(() => {
-      setMounted(true);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-    };
-  }, [setTheme]);
-
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  if (!mounted) {
-    return (
-      <button
-        aria-label="테마 전환 로딩"
-        className="relative flex h-10 w-10 items-center justify-center overflow-hidden text-text-primary"
-      >
-        <span className="absolute h-6 w-6 rounded-full opacity-70" />
-        <span className="absolute h-2 w-2 rounded-full bg-orange-strong/60" />
-      </button>
-    );
-  }
+    initializeTheme();
+  }, [initializeTheme]);
 
   return (
     <button

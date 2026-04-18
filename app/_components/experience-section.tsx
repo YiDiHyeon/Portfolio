@@ -11,10 +11,9 @@ interface ExperienceSectionProps {
 
 interface ExperienceItemProps {
     experience: PortfolioExperienceItem;
-    isLast: boolean;
 }
 
-function ExperienceItem({ experience, isLast }: ExperienceItemProps) {
+function ExperienceItem({ experience }: ExperienceItemProps) {
     const trackRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: trackRef,
@@ -37,7 +36,7 @@ function ExperienceItem({ experience, isLast }: ExperienceItemProps) {
             }}
             className="grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-16 border-b border-white/5 pb-24 md:pb-32 last:border-0 last:pb-0"
         >
-            <div className={`flex flex-col self-start md:gap-2 lg:gap-6 ${isLast ? "" : "lg:sticky lg:top-32 lg:h-fit"}`}>
+            <div className={`flex flex-col self-start md:gap-2 lg:gap-6`}>
                 <motion.div 
                     variants={{
                         hidden: { opacity: 0, y: 24 },
@@ -156,17 +155,11 @@ function ExperienceItem({ experience, isLast }: ExperienceItemProps) {
 
 export default function ExperienceSection({ experiences }: ExperienceSectionProps) {
     return (
-        <section className="relative z-20 overflow-x-clip border-t border-white/5 shadow-section dark:border-white/10">
-            <div className="absolute inset-0 bg-bg/92 sm:bg-bg/82 -z-20" />
-            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-transparent to-bg -z-10" />
-            <div className="absolute inset-x-0 top-40 bottom-0 bg-bg -z-10" />
-
-            <div className="absolute top-0 left-1/2 h-px w-3/4 max-w-xl -translate-x-1/2 bg-gradient-to-r from-transparent via-orange-strong/60 to-transparent" />
-
-            <div className="mx-auto max-w-7xl px-6 pt-20 pb-32 md:pb-40 lg:px-10 lg:pt-32 lg:pb-[25vh] relative z-10">
+        <section className="relative z-20 overflow-x-clip">
+            <div className="mx-auto max-w-7xl px-6 pt-24 pb-32 md:pb-40 lg:px-10 lg:pt-32 lg:pb-48 relative z-10">
                 <SectionHeading
                     eyebrow="Professional Journey"
-                    title="Experience."
+                    title="Experience"
                     className="mb-12 space-y-3 md:mb-14 md:space-y-4 lg:mb-16"
                 />
 
@@ -175,7 +168,6 @@ export default function ExperienceSection({ experiences }: ExperienceSectionProp
                         <ExperienceItem
                             key={`${experience.company}-${experienceIndex}`}
                             experience={experience}
-                            isLast={experienceIndex === experiences.length - 1}
                         />
                     ))}
                 </div>
