@@ -7,9 +7,11 @@ interface ScrambleTextProps {
     text: string;
     delayMs?: number;
     durationMs?: number;
+    enabled?: boolean;
 }
 
 const CHARS = "!?@#$%&XYZW1234567890+-=\\/<>*[]{}";
+const SCRAMBLE_FRAME_INTERVAL = 70;
 
 function getInitialScrambledText(text: string) {
     let scrambledText = "";
@@ -24,23 +26,20 @@ function getInitialScrambledText(text: string) {
     return scrambledText;
 }
 
-function getScrambledText(text: string) {
-    let scrambledText = "";
-
-    for (let i = 0; i < text.length; i++) {
-        scrambledText += CHARS[Math.floor(Math.random() * CHARS.length)];
-    }
-
-    return scrambledText;
-}
-
-export default function ScrambleText({ text, delayMs = 0, durationMs = 800 }: ScrambleTextProps) {
+export default function ScrambleText({
+    text,
+    delayMs = 0,
+    durationMs = 800,
+    enabled = true,
+}: ScrambleTextProps) {
     const prefersReducedMotion = useReducedMotion();
 
     const [displayText, setDisplayText] = useState(() => getInitialScrambledText(text));
 
     useEffect(() => {
-        if (prefersReducedMotion) return;
+        if (prefersReducedMotion || !enabled) {
+            return;
+        }
 
         let animationFrame: number;
         let startTimestamp: number | null = null;
@@ -51,10 +50,6 @@ export default function ScrambleText({ text, delayMs = 0, durationMs = 800 }: Sc
             const elapsed = timestamp - startTimestamp;
 
             if (elapsed < delayMs) {
-                if (timestamp - lastScrambleTime > 50) {
-                    lastScrambleTime = timestamp;
-                    setDisplayText(getScrambledText(text));
-                }
                 animationFrame = requestAnimationFrame(animate);
                 return;
             }
@@ -67,7 +62,7 @@ export default function ScrambleText({ text, delayMs = 0, durationMs = 800 }: Sc
                 return;
             }
 
-            if (timestamp - lastScrambleTime > 50) {
+            if (timestamp - lastScrambleTime > SCRAMBLE_FRAME_INTERVAL) {
                 lastScrambleTime = timestamp;
                 let currentText = "";
                 for (let i = 0; i < text.length; i++) {
@@ -88,9 +83,9 @@ export default function ScrambleText({ text, delayMs = 0, durationMs = 800 }: Sc
         animationFrame = requestAnimationFrame(animate);
 
         return () => cancelAnimationFrame(animationFrame);
-    }, [text, delayMs, durationMs, prefersReducedMotion]);
+    }, [text, delayMs, durationMs, prefersReducedMotion, enabled]);
 
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || !enabled) {
         return <span className="inline-block text-text-primary">{text}</span>;
     }
 

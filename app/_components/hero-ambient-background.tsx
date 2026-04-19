@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import {
+    motion,
+    useReducedMotion,
+    useScroll,
+    useTransform,
+    type MotionValue,
+} from "framer-motion";
 import {
     ENTRY_EASE,
     HERO_SCROLL_RANGE,
@@ -216,11 +222,43 @@ function ScrollRevealSticker({
 
 export default function HeroAmbientBackground() {
     const { scrollY: pageScrollY } = useScroll();
+    const shouldReduceMotion = useReducedMotion();
     const [sectionMetrics, setSectionMetrics] = useState<SectionMetrics>({});
     const [viewportHeight, setViewportHeight] = useState(0);
     const [viewportWidth, setViewportWidth] = useState(0);
+    const [enhancedEffectsReady, setEnhancedEffectsReady] = useState(false);
 
     useEffect(() => {
+        if (shouldReduceMotion) {
+            return;
+        }
+
+        const enableEnhancedEffects = () => {
+            setEnhancedEffectsReady(true);
+        };
+
+        if (typeof window.requestIdleCallback === "function") {
+            const idleId = window.requestIdleCallback(enableEnhancedEffects, {
+                timeout: 360,
+            });
+
+            return () => {
+                window.cancelIdleCallback(idleId);
+            };
+        }
+
+        const timeoutId = window.setTimeout(enableEnhancedEffects, 220);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [shouldReduceMotion]);
+
+    useEffect(() => {
+        if (!enhancedEffectsReady) {
+            return;
+        }
+
         let animationFrameId: number | null = null;
 
         const measureSections = () => {
@@ -290,15 +328,18 @@ export default function HeroAmbientBackground() {
             window.removeEventListener("resize", scheduleMeasure);
             observer.disconnect();
         };
-    }, []);
+    }, [enhancedEffectsReady]);
 
     const isMobileViewport = viewportWidth > 0 && viewportWidth < 768;
     const isLargeDesktopViewport = viewportWidth >= 1680;
+    const shouldRenderDecorativeEffects = enhancedEffectsReady && !shouldReduceMotion;
+    const shouldRenderDoodles = shouldRenderDecorativeEffects && !isMobileViewport;
+    const shouldRenderGrain = shouldRenderDecorativeEffects && !isMobileViewport;
     const backgroundPreserveAspectRatio = isMobileViewport ? "xMidYMid slice" : "xMidYMid meet";
     const accentDotsOpacity = useTransform(pageScrollY, HERO_SCROLL_RANGE, [1, 0.9, 0]);
     const accentDotsY = useTransform(pageScrollY, HERO_SCROLL_RANGE, [0, -4, -28]);
-    const primarySketchFilter = isLargeDesktopViewport ? undefined : "url(#hero-pencil-roughen)";
-    const softSketchFilter = isLargeDesktopViewport ? undefined : "url(#hero-pencil-roughen-soft)";
+    const primarySketchFilter = undefined;
+    const softSketchFilter = undefined;
 
     return (
         <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-bg">
@@ -350,7 +391,7 @@ export default function HeroAmbientBackground() {
             />
 
             <div className="absolute inset-0">
-                {SCROLL_REVEAL_DOODLES.map((doodle) => (
+                {(shouldRenderDoodles ? SCROLL_REVEAL_DOODLES : []).map((doodle) => (
                     <ScrollRevealSticker
                         key={doodle.src}
                         metric={sectionMetrics[doodle.sectionId]}
@@ -361,7 +402,7 @@ export default function HeroAmbientBackground() {
                 ))}
             </div>
 
-            <GrainOverlay />
+            {shouldRenderGrain ? <GrainOverlay /> : null}
 
             <svg
                 className="absolute inset-0 h-full w-full"
@@ -371,17 +412,6 @@ export default function HeroAmbientBackground() {
                 viewBox="0 0 1440 900"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <defs>
-                    <filter id="hero-pencil-roughen">
-                        <feTurbulence baseFrequency="0.022" numOctaves="3" result="noise" seed="17" />
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" />
-                    </filter>
-                    <filter id="hero-pencil-roughen-soft">
-                        <feTurbulence baseFrequency="0.035" numOctaves="2" result="noise" seed="31" />
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.2" />
-                    </filter>
-                </defs>
-
                 <SketchGroup
                     delay={0.1}
                     initialX={-240}
