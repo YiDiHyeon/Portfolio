@@ -1,7 +1,7 @@
 "use client";
 
 import type { MouseEvent } from "react";
-import { animate } from "framer-motion";
+import { startScrollAnimation } from "@/lib/scroll-animation";
 import { sectionNavigationItems } from "@/lib/section-navigation";
 
 interface NavProps {
@@ -30,18 +30,9 @@ export default function Nav({ activeId, onClick, className = "" }: NavProps) {
 
         const element = document.getElementById(id);
         if (element) {
-            const scroller = window;
-            const currentScrollPos = window.scrollY;
             const targetY = getSectionTargetY(id, element);
 
-            animate(currentScrollPos, targetY, {
-                type: "spring",
-                stiffness: 50,
-                damping: 14,
-                mass: 0.8,
-                restDelta: 0.5,
-                onUpdate: (latest) => scroller.scrollTo(0, latest),
-            });
+            startScrollAnimation(targetY);
         }
 
         onClick?.();

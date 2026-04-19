@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
-import { animate } from "framer-motion";
 import Nav from "@/components/nav";
 import ThemeToggle from "@/components/theme-toggle";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { portfolioPageContent } from "@/lib/portfolio-content";
+import { startScrollAnimation, stopActiveScrollAnimation } from "@/lib/scroll-animation";
 import { sectionNavigationIds } from "@/lib/section-navigation";
 
 export default function SiteChrome() {
@@ -24,6 +24,10 @@ export default function SiteChrome() {
     const logoVisibilityClassName = shouldShowLogo
         ? "opacity-100"
         : "pointer-events-none opacity-0";
+
+    useEffect(() => {
+        stopActiveScrollAnimation();
+    }, [pathname]);
 
     useEffect(() => {
         if (!isProjectDetailPage) {
@@ -48,15 +52,7 @@ export default function SiteChrome() {
         }
 
         event.preventDefault();
-
-        animate(window.scrollY, 0, {
-            type: "spring",
-            stiffness: 50,
-            damping: 14,
-            mass: 0.8,
-            restDelta: 0.5,
-            onUpdate: (latest) => window.scrollTo(0, latest),
-        });
+        startScrollAnimation(0);
     };
 
     return (

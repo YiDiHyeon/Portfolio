@@ -85,7 +85,7 @@ export default function IntroSection({ intro }: IntroSectionProps) {
             type: "spring",
             stiffness: 50,
             damping: 14,
-            mass: 0.8,
+            mass: 0.8,햐
             restDelta: 0.5,
             onUpdate: (latest) => window.scrollTo(0, latest),
         });
