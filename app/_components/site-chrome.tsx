@@ -57,7 +57,7 @@ export default function SiteChrome() {
 
     return (
         <>
-            <div className="fixed left-8 top-8 z-50 flex flex-col items-start lg:left-12 lg:top-12">
+            <div className="fixed left-6 top-8 z-50 flex flex-col items-start lg:left-12 lg:top-12">
                 <Link
                     href={logoHref}
                     onClick={handleHomeClick}

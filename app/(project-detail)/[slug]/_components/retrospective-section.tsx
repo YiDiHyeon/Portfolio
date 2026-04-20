@@ -33,7 +33,7 @@ export function RetrospectiveSection({ project }: { project: PortfolioProjectCon
             {closingNote ? (
                 <div className="max-w-xl pt-5 dark:border-white/10 sm:pt-6">
                     <p className="text-lg break-keep font-medium text-[#333333] dark:text-white">
-                        {closingNote}
+                        <EmphasisInlineText text={closingNote} />
                     </p>
                 </div>
             ) : null}

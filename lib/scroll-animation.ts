@@ -52,9 +52,7 @@ export function startScrollAnimation(targetY: number) {
     stopActiveScrollAnimation();
     registerInteractionListeners();
 
-    let controls: AnimationPlaybackControls;
-
-    controls = animate(window.scrollY, targetY, {
+    const controls: AnimationPlaybackControls = animate(window.scrollY, targetY, {
         type: "spring",
         stiffness: 50,
         damping: 14,

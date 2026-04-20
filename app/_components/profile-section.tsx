@@ -39,7 +39,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
     const chipBaseStyle = "inline-flex items-center rounded-full border border-border bg-transparent px-3 py-2 text-xs font-semibold text-text-primary/70";
 
     return (
-        <section className="relative overflow-hidden py-24 md:py-32 lg:py-48 flex items-center">
+        <section className="relative overflow-hidden py-10 md:py-32 lg:py-48 flex items-center">
             <motion.div
                 initial="hidden"
                 whileInView="visible"

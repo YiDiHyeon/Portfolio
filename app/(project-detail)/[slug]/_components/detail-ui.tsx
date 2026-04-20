@@ -70,14 +70,18 @@ export function DetailText({
     }
 
     if (paragraphs.length === 1) {
-        return <p className={className}>{paragraphs[0]}</p>;
+        return (
+            <p className={className}>
+                <EmphasisInlineText text={paragraphs[0]} />
+            </p>
+        );
     }
 
     return (
         <div className="space-y-3 sm:space-y-4">
             {paragraphs.map((paragraph, index) => (
                 <p key={`${paragraph}-${index}`} className={className}>
-                    {paragraph}
+                    <EmphasisInlineText text={paragraph} />
                 </p>
             ))}
         </div>
@@ -132,7 +136,7 @@ export function NumberedHeading({
 }
 
 export function EmphasisInlineText({ text }: { text: string }) {
-    const parts = text.split(/(\*\*.*?\*\*)/g);
+    const parts = text.split(/(\*\*.*?\*\*|__.*?__)/g);
 
     return (
         <>
@@ -142,6 +146,17 @@ export function EmphasisInlineText({ text }: { text: string }) {
                         <strong key={`${part}-${index}`} className="font-semibold text-text-primary">
                             {part.slice(2, -2)}
                         </strong>
+                    );
+                }
+
+                if (part.startsWith("__") && part.endsWith("__")) {
+                    return (
+                        <span
+                            key={`${part}-${index}`}
+                            className="underline decoration-orange-strong/80 decoration-[0.09em] underline-offset-[0.18em]"
+                        >
+                            {part.slice(2, -2)}
+                        </span>
                     );
                 }
 

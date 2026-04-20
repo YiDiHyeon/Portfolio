@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import BrowserSafetyPatches from "./_components/browser-safety-patches";
 import SiteChrome from "./_components/site-chrome";
 import "./globals.css";
 
@@ -73,12 +74,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="relative min-h-screen w-full bg-bg text-text-primary">
+      <body className="relative min-h-screen w-full overflow-x-hidden bg-bg text-text-primary">
+        <BrowserSafetyPatches />
         <SiteChrome />
-        <div className="flex min-h-screen flex-col lg:flex-row">
+        <div className="min-h-screen lg:flex lg:flex-row">
           <div
             id="main-scroll-container"
-            className="relative min-w-0 flex-1"
+            className="relative min-w-0 w-full touch-pan-y lg:flex-1"
           >
             {children}
           </div>

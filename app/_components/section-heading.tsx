@@ -26,9 +26,9 @@ export default function SectionHeading({
                     },
                 },
             }}
-            className={className}
+            className={`${className} !space-y-0 md:!space-y-4`}
         >
-            <div className="overflow-hidden">
+            <div className="hidden overflow-hidden md:block">
                 <motion.p
                     variants={{
                         hidden: { y: "110%" },

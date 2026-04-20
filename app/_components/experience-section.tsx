@@ -34,7 +34,7 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                     transition: { staggerChildren: 0.15 }
                 }
             }}
-            className="grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-16 border-b border-white/5 pb-24 md:pb-32 last:border-0 last:pb-0"
+            className="grid gap-10 border-b border-white/5 pb-14 md:pb-24 lg:grid-cols-[1fr_3fr] lg:gap-16 last:border-0 last:pb-0"
         >
             <div className={`flex flex-col self-start md:gap-2 lg:gap-6`}>
                 <motion.div 
@@ -75,8 +75,8 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                 </motion.div>
             </div>
 
-            <div className="space-y-20 pt-4 lg:pt-0">
-                <div ref={trackRef} className="relative space-y-24 pb-6 pl-6 lg:pl-8">
+            <div className="space-y-14 pt-3 md:space-y-16 lg:pt-0">
+                <div ref={trackRef} className="relative space-y-18 pb-4 pl-6 md:space-y-20 md:pb-6 lg:pl-8 lg:space-y-24">
                     <div className="absolute left-0 top-2 -bottom-2 w-px bg-border/50" />
 
                     <motion.div
@@ -156,14 +156,14 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
 export default function ExperienceSection({ experiences }: ExperienceSectionProps) {
     return (
         <section className="relative z-20 overflow-x-clip">
-            <div className="mx-auto max-w-7xl px-6 pt-24 pb-32 md:pb-40 lg:px-10 lg:pt-32 lg:pb-48 relative z-10">
+            <div className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-28 md:pb-40 lg:px-10 lg:pt-32 lg:pb-48">
                 <SectionHeading
                     eyebrow="Professional Journey"
                     title="Experience"
                     className="mb-12 space-y-3 md:mb-14 md:space-y-4 lg:mb-16"
                 />
 
-                <div className="space-y-32 mt-16 md:mt-24">
+                <div className="mt-14 space-y-18 md:mt-20 md:space-y-24 lg:mt-24 lg:space-y-32">
                     {experiences.map((experience, experienceIndex) => (
                         <ExperienceItem
                             key={`${experience.company}-${experienceIndex}`}
