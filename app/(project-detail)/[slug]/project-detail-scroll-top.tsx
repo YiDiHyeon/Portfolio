@@ -9,13 +9,6 @@ export default function ProjectDetailScrollTop() {
     const pathname = usePathname();
     const [isButtonVisible, setIsButtonVisible] = useState(false);
 
-    useLayoutEffect(() => {
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: "auto",
-        });
-    }, [pathname]);
 
     useEffect(() => {
         const handleScroll = () => {

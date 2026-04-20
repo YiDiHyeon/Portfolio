@@ -8,7 +8,7 @@ import { portfolioPageContent } from "@/lib/portfolio-content";
 
 export default function Home() {
     return (
-        <main className="relative min-h-screen overflow-x-hidden bg-bg text-text-primary touch-pan-y">
+        <main className="relative min-h-screen overflow-x-hidden bg-bg text-text-primary">
             <HeroAmbientBackground />
 
             <div id="home" className="relative z-10 flex min-h-[100svh] w-full items-center md:min-h-screen">

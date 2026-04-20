@@ -80,7 +80,7 @@ export default function RootLayout({
         <div className="min-h-screen lg:flex lg:flex-row">
           <div
             id="main-scroll-container"
-            className="relative min-w-0 w-full touch-pan-y lg:flex-1"
+            className="relative min-w-0 w-full lg:flex-1"
           >
             {children}
           </div>

@@ -20,7 +20,6 @@ export default function StandardProjectCard({ project }: StandardProjectCardProp
     return (
         <Link
             href={`/${project.slug}`}
-            scroll={false}
             className="group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-strong focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
             <motion.article

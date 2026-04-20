@@ -27,7 +27,6 @@ export default function FeaturedProjectCard({
     return (
         <Link
             href={`/${project.slug}`}
-            scroll={false}
             className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-strong focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
         >
             <motion.article
