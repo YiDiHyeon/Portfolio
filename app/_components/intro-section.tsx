@@ -92,7 +92,7 @@ export default function IntroSection({ intro }: IntroSectionProps) {
     };
 
     return (
-        <section className="relative flex min-h-[100svh] w-full items-center overflow-hidden md:min-h-screen">
+        <section className="relative flex min-h-[100svh] w-full items-center overflow-x-clip md:min-h-screen">
             <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-14 pt-[calc(var(--mobile-header-offset)+1rem)] md:px-10 md:py-18">
                 <motion.div
                     style={{

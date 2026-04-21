@@ -2,7 +2,10 @@ import type { PortfolioProjectContent } from "@/types/portfolio";
 import { SECTION_STACK_CLASS_NAME } from "./_components/detail-ui";
 import { OverviewSection } from "./_components/overview-section";
 import { CoreDesignSection } from "./_components/core-design-section";
-import { TechnicalDecisionsSection } from "./_components/technical-decision-section";
+import {
+    TechnicalDecisionsSection,
+    TroubleshootingSection,
+} from "./_components/technical-decision-section";
 import { OutcomeSection } from "./_components/outcome-section";
 import { RetrospectiveSection } from "./_components/retrospective-section";
 
@@ -24,6 +27,7 @@ export default function ProjectDetailSections({
             ) : null}
 
             <TechnicalDecisionsSection project={project} />
+            <TroubleshootingSection project={project} />
             <OutcomeSection project={project} />
             <RetrospectiveSection project={project} />
         </div>

@@ -1,15 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const SCROLL_TOP_BUTTON_THRESHOLD = 600;
 
 export default function ProjectDetailScrollTop() {
-    const pathname = usePathname();
     const [isButtonVisible, setIsButtonVisible] = useState(false);
-
-
     useEffect(() => {
         const handleScroll = () => {
             setIsButtonVisible(window.scrollY >= SCROLL_TOP_BUTTON_THRESHOLD);

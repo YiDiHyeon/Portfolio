@@ -74,7 +74,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="relative min-h-screen w-full overflow-x-hidden bg-bg text-text-primary">
+      <body className="relative min-h-screen w-full overflow-x-clip bg-bg text-text-primary">
         <BrowserSafetyPatches />
         <SiteChrome />
         <div className="min-h-screen lg:flex lg:flex-row">

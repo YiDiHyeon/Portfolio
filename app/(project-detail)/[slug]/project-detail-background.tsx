@@ -6,7 +6,7 @@ const DOODLE_IMAGE_CLASS_NAME =
 function GridBackground() {
     return (
         <div
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-0 opacity-60"
             style={{
                 backgroundImage: `
                     linear-gradient(to right, var(--intro-grid-color) 1px, transparent 1px),
@@ -19,7 +19,6 @@ function GridBackground() {
         />
     );
 }
-
 
 export default function ProjectDetailBackground() {
     return (

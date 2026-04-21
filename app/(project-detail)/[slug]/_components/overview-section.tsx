@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { PortfolioProjectContent } from "@/types/portfolio";
 import {
     APPROACH_CALLOUT_CLASS_NAME,
+    DetailList,
     DetailSection,
     DetailText,
     EmphasisInlineText,
@@ -9,14 +10,6 @@ import {
     OVERVIEW_BLOCK_CLASS_NAME,
     OVERVIEW_CONTENT_CLASS_NAME,
 } from "./detail-ui";
-
-function getOverviewGoalItems(project: PortfolioProjectContent): string[] {
-    if (project.goals?.length) {
-        return project.goals.slice(0, 3);
-    }
-
-    return [project.solution];
-}
 
 function OverviewBlock({
     index,
@@ -38,6 +31,15 @@ function OverviewBlock({
 export function OverviewSection({ project }: { project: PortfolioProjectContent }) {
     let index = 1;
     const hasSummary = Boolean(project.summaryLine || project.overview);
+    const hasProblemBlock = Boolean(project.problem);
+    const hasSolution = Boolean(project.solution);
+    const implementationItems = project.implementation ?? [];
+    const hasImplementation = implementationItems.length > 0;
+    const solutionTitle = project.problem ? "해결 방식" : "구현 방식";
+
+    if (!hasSummary && !hasProblemBlock && !hasSolution && !hasImplementation && !project.coreFeature?.length) {
+        return null;
+    }
 
     return (
         <DetailSection title="프로젝트 개요">
@@ -47,12 +49,6 @@ export function OverviewSection({ project }: { project: PortfolioProjectContent 
                         <div className={`${APPROACH_CALLOUT_CLASS_NAME} mt-2 sm:mt-0`}>
                             <div className="absolute inset-y-0 left-0 w-[0.15rem] bg-orange-strong/80" />
                             <div className="space-y-3 pl-1 sm:space-y-4 sm:pl-2">
-                                {project.summaryLine ? (
-                                    <p className="text-body text-text-primary">
-                                        <EmphasisInlineText text={project.summaryLine} />
-                                    </p>
-                                ) : null}
-
                                 {project.overview ? (
                                     <DetailText
                                         text={project.overview}
@@ -64,39 +60,29 @@ export function OverviewSection({ project }: { project: PortfolioProjectContent 
                     </OverviewBlock>
                 ) : null}
 
-                <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+                {hasProblemBlock ? (
                     <OverviewBlock index={index++} title="문제 정의">
-                        <DetailText text={project.problem} className="text-body" />
+                        <DetailText text={project.problem!} className="text-body" />
                     </OverviewBlock>
+                ) : null}
 
-                    <OverviewBlock index={index++} title="개선 방향">
-                        <ul className="space-y-2">
-                            {getOverviewGoalItems(project).map((goal, goalIndex) => (
-                                <li key={goalIndex} className="flex items-start gap-2">
-                                    <span className="mt-3 h-1 w-1 shrink-0 rounded-full bg-orange-strong" />
-                                    <span className="text-body min-w-0">
-                                        <EmphasisInlineText text={goal} />
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
+                {hasSolution ? (
+                    <OverviewBlock index={index++} title={solutionTitle}>
+                        <DetailText
+                            text={project.solution!}
+                            className="text-body max-w-4xl text-text-primary"
+                        />
                     </OverviewBlock>
-                </div>
+                ) : null}
 
-                <OverviewBlock index={index++} title="구현 방향">
-                    <div className={`${APPROACH_CALLOUT_CLASS_NAME} mt-2 sm:mt-0`}>
-                        <div className="absolute inset-y-0 left-0 w-[0.15rem] bg-orange-strong/80" />
-                        <div className="pl-1 sm:pl-2">
-                            <DetailText
-                                text={project.solution}
-                                className="text-body max-w-4xl text-text-primary"
-                            />
-                        </div>
-                    </div>
-                </OverviewBlock>
+                {hasImplementation ? (
+                    <OverviewBlock index={index++} title="구현 포인트">
+                        <DetailList items={implementationItems} compact />
+                    </OverviewBlock>
+                ) : null}
 
                 {project.coreFeature?.length ? (
-                    <OverviewBlock index={index++} title="핵심 기능">
+                    <OverviewBlock index={index++} title="주요 기능">
                         <ul className="space-y-2 sm:space-y-3">
                             {project.coreFeature.map((feature, featureIndex) => (
                                 <li key={featureIndex} className="flex items-start gap-3 sm:gap-4">

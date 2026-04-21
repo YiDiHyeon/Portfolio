@@ -38,7 +38,7 @@ export default async function ProjectDetailPage({
     );
 
     return (
-        <main className="relative min-h-screen overflow-hidden text-text-primary">
+        <main className="relative min-h-screen overflow-x-clip text-text-primary">
             <ProjectDetailScrollTop />
             <ProjectDetailBackground />
             <div className="relative z-20 my-20 md:px-6 lg:my-40 lg:px-10">

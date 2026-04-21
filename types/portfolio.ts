@@ -88,10 +88,10 @@ export interface PortfolioProjectContent {
     agency?: string;
     team?: string;
     tech: PortfolioProjectTech;
-    problem: string;
-    solution: string;
-    implementation: string[];
-    troubleshooting: string;
+    problem?: string;
+    solution?: string;
+    implementation?: string[];
+    troubleshooting?: string;
     overview?: string;
     summaryLine?: string;
     goals?: string[];
