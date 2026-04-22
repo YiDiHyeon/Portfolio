@@ -6,7 +6,12 @@ const SCROLL_TOP_BUTTON_THRESHOLD = 600;
 
 export default function ProjectDetailScrollTop() {
     const [isButtonVisible, setIsButtonVisible] = useState(false);
+
     useEffect(() => {
+        // Next.js 라우터와 브라우저의 Scroll Anchoring 충돌로 진입 시 하단으로 스크롤이 고정되는 버그 방지
+        window.scrollTo(0, 0);
+        const timer = setTimeout(() => window.scrollTo(0, 0), 100);
+
         const handleScroll = () => {
             setIsButtonVisible(window.scrollY >= SCROLL_TOP_BUTTON_THRESHOLD);
         };
@@ -15,6 +20,7 @@ export default function ProjectDetailScrollTop() {
         window.addEventListener("scroll", handleScroll, { passive: true });
 
         return () => {
+            clearTimeout(timer);
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);

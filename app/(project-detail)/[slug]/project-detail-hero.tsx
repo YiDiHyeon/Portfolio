@@ -48,19 +48,19 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
             <div className="max-w-5xl">
                 <div className="max-w-4xl">
                     <div className={HERO_BREADCRUMB_ROW_CLASS_NAME}>
-                        <Link
-                            href="/#home"
+                        <a
+                            href="/"
                             className={HERO_BREADCRUMB_LINK_CLASS_NAME}
                         >
                             Home
-                        </Link>
+                        </a>
                         <span aria-hidden="true" className={HERO_BREADCRUMB_DIVIDER_CLASS_NAME}>/</span>
-                        <Link
+                        <a
                             href="/#projects"
                             className={HERO_BREADCRUMB_LINK_CLASS_NAME}
                         >
                             Projects
-                        </Link>
+                        </a>
                     </div>
 
                     <div className={HERO_CONTENT_BLOCK_CLASS_NAME}>

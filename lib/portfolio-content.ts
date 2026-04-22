@@ -43,6 +43,8 @@ const experiences: PortfolioExperienceItem[] = [
                     "입학 프로세스 내 20여 개 조건부 동적 폼 및 연쇄 초기화 로직 구현",
                     "백엔드 수정이 제한된 환경에서 Computed와 Util 기반 데이터 재가공 구조 적용",
                     "useAsyncData와 Promise.all 구조 개선으로 데이터 로딩 흐름 정리",
+
+
                 ],
             },
             {
