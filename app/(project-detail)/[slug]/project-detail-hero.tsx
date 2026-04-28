@@ -48,13 +48,15 @@ export default function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
             <div className="max-w-5xl">
                 <div className="max-w-4xl">
                     <div className={HERO_BREADCRUMB_ROW_CLASS_NAME}>
-                        <a
+                        <Link
                             href="/"
                             className={HERO_BREADCRUMB_LINK_CLASS_NAME}
                         >
                             Home
-                        </a>
+                        </Link>
                         <span aria-hidden="true" className={HERO_BREADCRUMB_DIVIDER_CLASS_NAME}>/</span>
+                        {/* Use a plain anchor for hash navigation to avoid duplicate hash behavior. */}
+                        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                         <a
                             href="/#projects"
                             className={HERO_BREADCRUMB_LINK_CLASS_NAME}

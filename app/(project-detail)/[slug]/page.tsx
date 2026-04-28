@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { portfolioPageContent } from "@/lib/portfolio-content";
+import {
+    getProjectBySlug,
+    getProjectPageTitle,
+    siteName,
+} from "@/lib/site-metadata";
 import ProjectDetailBackground from "./project-detail-background";
 import ProjectDetailHero from "./project-detail-hero";
 import ProjectDetailSections from "./project-detail-sections";
@@ -13,14 +19,49 @@ interface ProjectDetailPageProps {
 
 const FEATURED_PROJECT_SLUGS = ["tarome", "chap-landing"] as const;
 
-function getProjectBySlug(slug: string) {
-    return portfolioPageContent.projects.find((project) => project.slug === slug);
-}
-
 export function generateStaticParams() {
     return portfolioPageContent.projects.map((project) => ({
         slug: project.slug,
     }));
+}
+
+export async function generateMetadata({
+    params,
+}: ProjectDetailPageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const project = getProjectBySlug(slug);
+
+    if (!project) {
+        notFound();
+    }
+
+    return {
+        title: project.title,
+        description: project.description,
+        alternates: {
+            canonical: `/${project.slug}`,
+        },
+        openGraph: {
+            title: getProjectPageTitle(project.title),
+            description: project.description,
+            url: `/${project.slug}`,
+            siteName,
+            locale: "ko_KR",
+            type: "website",
+            images: [
+                {
+                    url: "/og-image.png",
+                    alt: `${project.title} 프로젝트 대표 이미지`,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: getProjectPageTitle(project.title),
+            description: project.description,
+            images: ["/og-image.png"],
+        },
+    };
 }
 
 export default async function ProjectDetailPage({

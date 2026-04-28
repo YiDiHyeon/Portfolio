@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import {
+  siteDescription,
+  siteName,
+  siteOrigin,
+  siteTitle,
+} from "@/lib/site-metadata";
 import BrowserSafetyPatches from "./_components/browser-safety-patches";
 import SiteChrome from "./_components/site-chrome";
 import "./globals.css";
@@ -42,8 +48,35 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: '이지현 | Frontend Developer',
-  description: '운영 가능한 UI를 만드는 프론트엔드 개발자 포트폴리오',
+  metadataBase: siteOrigin,
+  title: {
+    default: siteTitle,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: "/",
+    siteName,
+    type: "website",
+    locale: "ko_KR",
+    images: [
+      {
+        url: "/og-image.png",
+        alt: "이지현 프론트엔드 개발자 포트폴리오 대표 이미지",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
