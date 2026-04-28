@@ -16,7 +16,7 @@ const profile: PortfolioProfile = {
         "백엔드 제약 속에서도 프론트에서 해결 가능한 구조를 고민합니다.",
     ],
     skills: {
-        primary: ["Vue 3", "Nuxt 3","React", "Next.js"],
+        primary: ["React", "Next.js", "Vue 3", "Nuxt 3"],
         etc: ["TypeScript", "Tailwind", "Pinia", "React Query"],
     },
     links: {

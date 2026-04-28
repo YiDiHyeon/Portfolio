@@ -16,7 +16,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       aria-label="테마 전환"
-      className="group relative flex h-10 w-10 items-center justify-center overflow-hidden bg-transparent transition-colors duration-300 hover:text-orange-strong active:scale-95"
+      className="group relative flex h-10 w-10 items-center cursor-pointer justify-center overflow-hidden bg-transparent transition-colors duration-300 hover:text-orange-strong active:scale-95"
     >
       <span
         className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
