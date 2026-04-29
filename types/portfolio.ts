@@ -1,6 +1,6 @@
-export interface PortfolioProfileSkills {
-    primary: string[];
-    etc: string[];
+export interface PortfolioProfileSkillGroup {
+    label: string;
+    items: string[];
 }
 
 export interface PortfolioProfileLinks {
@@ -16,7 +16,7 @@ export interface PortfolioProfile {
     jobTitle: string;
     tagline: string;
     summary: string[];
-    skills: PortfolioProfileSkills;
+    skills: PortfolioProfileSkillGroup[];
     links: PortfolioProfileLinks;
     location?: string;
 }
@@ -30,11 +30,13 @@ export interface PortfolioExperienceProject {
     name: string;
     keyPoints: string[];
     points: string[];
+    url?: string;
 }
 
 export interface PortfolioExperienceItem {
     company: string;
     companyEn: string;
+    companyDescription: string;
     period: string;
     team: string;
     role: string;
@@ -115,4 +117,31 @@ export interface PortfolioPageContent {
     experiences: PortfolioExperienceItem[];
     projects: PortfolioProjectContent[];
     footer: PortfolioFooterContent;
+}
+
+export interface FeaturedProjectsContent {
+    id: string;
+    company: string;
+    title: string;
+    summary: string;
+    period: string;
+    role: string;
+    contribution?: string;
+    team?: string;
+    platform?: string;
+    techStack: string[];
+    overview: string[];
+    keyFeatures: string[];
+    responsibilities: string[];
+    challenges: {
+        title: string;
+        description: string;
+    }[];
+
+    implementation: string[];
+    outcome: string[];
+    links?: {
+        label: string;
+        url: string;
+    }[];
 }
