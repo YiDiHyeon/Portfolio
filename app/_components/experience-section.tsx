@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import SectionHeading from "@/app/_components/section-heading";
 import { motion, useScroll } from "framer-motion";
 import { useRef } from "react";
@@ -8,6 +9,9 @@ import type { PortfolioExperienceItem } from "@/types/portfolio";
 interface ExperienceSectionProps {
     experiences: PortfolioExperienceItem[];
 }
+
+const EXPERIENCE_PROJECT_CTA_CLASS_NAME =
+    "group inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold tracking-[0.01em] text-text-primary transition-colors hover:border-orange-strong hover:text-orange-strong dark:border-white/12";
 
 interface ExperienceItemProps {
     experience: PortfolioExperienceItem;
@@ -36,7 +40,7 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
             }}
             className="grid gap-10 border-b border-white/5 pb-14 md:pb-24 lg:grid-cols-[1fr_3fr] lg:gap-16 last:border-0 last:pb-0"
         >
-            <div className={`flex flex-col self-start md:gap-2 lg:gap-6`}>
+            <div className={`flex flex-col self-start md:gap-2 lg:gap-4`}>
                 <motion.div 
                     variants={{
                         hidden: { opacity: 0, y: 24 },
@@ -47,10 +51,8 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                     <p className="text-label-xs font-bold uppercase tracking-label-tight text-orange-strong">
                         Professional Path
                     </p>
-                    <p className="text-xl lg:text-2xl font-bold tracking-tight text-text-primary leading-snug">
-                        {start} <span className="text-orange-strong/50 mx-1">—</span>
-                        <br className="hidden md:block" />
-                        {end || ""}
+                    <p className="text-xl font-bold tracking-tight text-text-primary leading-snug">
+                        {start} <span className="text-orange-strong/50 mx-1">—</span> {end || ""}
                     </p>
                 </motion.div>
 
@@ -72,6 +74,9 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                     <p className=" mt-1 text-base text-text-secondary">
                         {experience.role}
                     </p>
+                    <p className="mt-5 max-w-sm text-sm leading-relaxed text-text-secondary/80 break-keep md:text-sm">
+                        {experience.companyDescription}
+                    </p>
                 </motion.div>
             </div>
 
@@ -80,7 +85,12 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                     <div className="absolute left-0 top-2 -bottom-2 w-px bg-border/50" />
 
                     <motion.div
-                        style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
+                        style={{
+                            scaleY: scrollYProgress,
+                            transformOrigin: "top",
+                            zIndex: 99,
+                            bottom: "-100px",
+                        }}
                         className="absolute left-0 top-2 -bottom-2 w-px bg-orange-strong"
                     />
 
@@ -113,9 +123,11 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                                         {String(projectIndex + 1).padStart(2, "0")}
                                     </p>
 
-                                    <h4 className="text-2xl md:text-2xl lg:text-3xl font-black tracking-tighter text-text-primary leading-[1.15] break-keep">
-                                        {project.name}
-                                    </h4>
+                                    <div className="flex flex-col items-start gap-3 md:flex-row md:items-end md:gap-4">
+                                        <h4 className="text-2xl md:flex-1 md:text-2xl lg:text-3xl font-black tracking-tighter text-text-primary leading-[1.15] break-keep">
+                                            {project.name}
+                                        </h4>
+                                    </div>
                                 </div>
 
                                 {project.keyPoints.length > 0 && (
@@ -124,7 +136,7 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                                             <span key={tag}>
                                                 {tag}
                                                 {tagIndex < project.keyPoints.length - 1 && (
-                                                    <span className="text-orange-strong font-black mx-2 md:mx-3 text-[1.2em] align-middle">
+                                                    <span className="text-orange-strong font-black mx-2 md:mx-3 text-[1.2em] align-middle wrap-break-word">
                                                         ·
                                                     </span>
                                                 )}
@@ -144,7 +156,22 @@ function ExperienceItem({ experience }: ExperienceItemProps) {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                                {project.url && (
+                                    <a
+                                        href={project.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={EXPERIENCE_PROJECT_CTA_CLASS_NAME}
+                                            >
+                                                <span>서비스 바로가기</span>
+                                                <ArrowUpRight
+                                                    aria-hidden="true"
+                                                    className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 "
+                                                    strokeWidth={2}
+                                                />
+                                            </a>
+                                        )}
+                                    </div>
                         </motion.div>
                     ))}
                 </div>

@@ -112,11 +112,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
                         </div>
                         
                         <div className="grid gap-10 sm:grid-cols-2 lg:gap-12">
-                            {[
-                                { label: "Frontend", items: ["Vue.js", "Nuxt.js", "React", "Next.js"] },
-                                { label: "Language", items: ["JavaScript", "TypeScript"] },
-                                { label: "Architecture & Tools", items: ["Tailwind", "Pinia", "React Query", "Zustand"] }
-                            ].map((group) => (
+                            {profile.skills.map((group) => (
                                 <div key={group.label} className="space-y-5">
                                     <p className="text-[10px] font-black uppercase tracking-[0.25em] text-text-primary/30 flex items-center gap-2">
                                         <span className="h-1 w-1 rounded-full bg-orange-strong/30" />
